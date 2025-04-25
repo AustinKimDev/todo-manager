@@ -3,8 +3,18 @@
 import { logout } from "@/app/(auth)/actions";
 import { Button } from "@/components/ui/button";
 import { type User } from "@supabase/supabase-js"; // Import User type
+import clsx from "clsx"; // Import clsx
+import { Gaegu } from "next/font/google"; // Import Gaegu
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+
+// Setup Gaegu font
+const gaegu = Gaegu({
+  // No need for variable here, just use className
+  weight: ["400", "700"], // Specify weights
+  subsets: ["latin"],
+  display: "swap",
+});
 
 // Define props for Header
 interface HeaderProps {
@@ -24,7 +34,10 @@ export default function Header({ user }: HeaderProps) {
           {!isHomePage && (
             <Link
               href="/"
-              className="text-lg font-bold text-white/90 hover:text-white transition-colors duration-150"
+              className={clsx(
+                "text-lg font-bold text-white/90 hover:text-white transition-colors duration-150",
+                gaegu.className // Add Gaegu font class using clsx
+              )}
             >
               My Planner
             </Link>

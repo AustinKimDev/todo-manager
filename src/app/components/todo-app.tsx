@@ -23,7 +23,6 @@ const TodoApp: React.FC<TodoAppProps> = ({ user }) => {
     isLoading,
     lists,
     selectedList,
-    todosForSelectedList, // Use this for CalendarView
     todosForSelectedDate, // Use this for TodoDetails
     currentMonth,
     selectedDate,
@@ -64,10 +63,16 @@ const TodoApp: React.FC<TodoAppProps> = ({ user }) => {
     // Pass refs to Modals if needed for focusing
     createListInputRef,
     addTodoModalInputRef,
+    todosByListId, // Destructure todosByListId here
   } = useTodoManager(user); // Pass user to the hook
 
   // Find list name for delete modal locally (or pass from hook if preferred)
   const listToDelete = lists.find((list) => list.id === listToDeleteId);
+
+  // Use todosByListId and selectedList.id to get the correct data for the calendar
+  const calendarTodos = selectedList
+    ? todosByListId[selectedList.id] || {}
+    : {};
 
   // --- Render Logic ---
 
@@ -108,7 +113,7 @@ const TodoApp: React.FC<TodoAppProps> = ({ user }) => {
               <CalendarView
                 currentMonth={currentMonth}
                 selectedDate={selectedDate}
-                allTodosForList={todosForSelectedList} // Pass all todos for range bars
+                allTodosForList={calendarTodos} // Pass the correctly typed data
                 rangeSelectionStart={rangeSelectionStart}
                 rangeSelectionEndHover={rangeSelectionEndHover}
                 isDraggingRange={isDraggingRange}
@@ -123,7 +128,7 @@ const TodoApp: React.FC<TodoAppProps> = ({ user }) => {
             <div>
               <TodoDetails
                 selectedDate={selectedDate}
-                todos={todosForSelectedDate} // Pass filtered todos
+                todos={todosForSelectedDate} // Keep using todosForSelectedDate for the details view
                 onToggleTodo={handleToggleTodo}
                 onDeleteTodo={openDeleteTodoModal}
               />

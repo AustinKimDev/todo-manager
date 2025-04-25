@@ -633,6 +633,7 @@ export function useTodoManager(user: User | null) {
     confirmDeleteTodo,
     createListInputRef,
     addTodoModalInputRef,
+    todosByListId,
   };
 }
 
