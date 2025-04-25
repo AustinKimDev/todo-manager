@@ -1,5 +1,6 @@
 "use client";
 
+import { type User } from "@supabase/supabase-js"; // Import User type
 import React from "react";
 // Import hook
 import { useTodoManager } from "../hooks/useTodoManager";
@@ -9,13 +10,18 @@ import ListManager from "./list-manager";
 import Modal from "./modal";
 import TodoDetails from "./todo-details";
 
-// The main App component - Now uses the hook for logic and state
-const TodoApp: React.FC = () => {
-  // Use the custom hook to get state and handlers
+// Define props interface for TodoApp
+interface TodoAppProps {
+  user: User | null; // Accept User object or null
+}
+
+// The main App component
+const TodoApp: React.FC<TodoAppProps> = ({ user }) => {
+  // Destructure user from props
+  // Pass user to the custom hook
   const {
     isLoading,
     lists,
-    selectedListId,
     selectedList,
     todosForSelectedList, // Use this for CalendarView
     todosForSelectedDate, // Use this for TodoDetails
@@ -58,7 +64,7 @@ const TodoApp: React.FC = () => {
     // Pass refs to Modals if needed for focusing
     createListInputRef,
     addTodoModalInputRef,
-  } = useTodoManager();
+  } = useTodoManager(user); // Pass user to the hook
 
   // Find list name for delete modal locally (or pass from hook if preferred)
   const listToDelete = lists.find((list) => list.id === listToDeleteId);

@@ -2,6 +2,7 @@
 export interface ListItem {
   id: string;
   name: string;
+  color?: string; // Add optional color property
 }
 
 export interface TodoItem {
